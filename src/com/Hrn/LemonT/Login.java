@@ -16,8 +16,7 @@ import javax.swing.border.EmptyBorder;
 import javax.imageio.ImageIO;
 
 import javax.swing.JButton;
-// https://www.youtube.com/watch?v=4oVrMpvtU8c 
-// 43:17
+
 
 public class Login extends JFrame{
     private JPanel contentPane;
