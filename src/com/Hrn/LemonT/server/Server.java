@@ -20,9 +20,22 @@ public class Server implements Runnable{
     private boolean running=false;
     private Thread run,manage,send,recieve;
     
-    private String ARGS="//c//";
+    ////Commands///////////////////////////////////////////////////////////////////////
+    private final String COMMAND_ARGS="sudo";
+    private final String ARGS_FETCHER="get";
+    private final String ACTIVE_CLIENTS="clients";
+    private final String RAW_DATA="raw";
+    // private String 
+
+    private boolean raw=false;
+    //////////////////////////////////////////////////////////////////////////////////
+
     private final int MAX_ATTEMPTS=5;
     
+
+    enum CommandArgs{
+        COMMANDS
+    }
     public Server(int port)
     {
         this.port= port;
@@ -43,15 +56,43 @@ public class Server implements Runnable{
         System.out.println("Server started on port : "+port);
         manageClients();
         receive();
+        
+        ////commands
         Scanner scanner = new Scanner(System.in);
         while(running){
-            String command= scanner.nextLine();
-            if(!command.startsWith(ARGS)) {
-                sendToAll("/m/Server: "+command+"/e/");
-                continue;
+            String command= scanner.nextLine() ;
+            command = command+" ";
+            System.out.println(command);
+            if(command.startsWith(COMMAND_ARGS ))
+            {
+                command=command.split(COMMAND_ARGS)[1];
+                command=command.split(" ")[1];
+                System.out.println(command);
+                if(command.startsWith(ARGS_FETCHER))
+                {
+                    command=command+" ";
+                    command=command.split(ARGS_FETCHER)[0];
+                    System.out.println(command);
+                    // command=command.split(" ")[1];
+                    if(command.startsWith(ACTIVE_CLIENTS)){
+                        System.out.println("***************************************");
+                        System.out.println("Client      |"+ "Client ID      |" + "Client Address        |");
+                        for(int i=0;i<clients.size();i++)System.out.println(clients.get(i).getName()+"   " +clients.get(i).getID()+"   "+clients.get(i).address);
+                    }else if(command.startsWith(RAW_DATA)){
+                        System.out.println("raw data will be shown");
+                    }else{
+                        System.out.println("Maybe the command isn't here ,check yourself:: "+command);
+                        // System.out.println("Maybe the command isn't here ,:: ");
+                    }
+                }else{
+                    System.out.println(command+" is not a valid option");
+                }
             }
-            command= command.substring(ARGS.length());
+            else{
+                System.out.println(command+" is not a server command");
+            }
         }
+
     }
 
     private void receive() {
@@ -87,6 +128,7 @@ public class Server implements Runnable{
             msg=msg.split("/e/")[0];
             System.out.println(msg);
         }
+        if(raw) System.out.println(message);
         for (int i=0;i<clients.size();i++){
             UserClient client=clients.get(i);
             send(message.getBytes(),client.address,client.port);
@@ -115,8 +157,9 @@ public class Server implements Runnable{
     private void process(DatagramPacket packet){
         String  string= new String(packet.getData());
         
-        //task: Connection packet
+        if(raw) System.out.println(string);
 
+        //task: Connection packet
         if(string.startsWith("/c/")){
             int id=UniqueID.getIdentifier();
             System.out.println("ID:: "+id);
@@ -137,7 +180,7 @@ public class Server implements Runnable{
             disconnect(Integer.parseInt(id), true);
         }
         else if(string.startsWith("/i/")){
-            System.out.println(string);
+            // System.out.println(string);
             responseList.add(Integer.parseInt(string.split("/i/|/e/")[1]));
 
         }
@@ -146,7 +189,7 @@ public class Server implements Runnable{
         }
     }
 
-    private void disconnect(int id,boolean status){
+    private void disconnect(int id,boolean isExitClean){
         System.out.println("entered");
         UserClient tempClient= null;;
         for(int i=0;i<clients.size();i++){
@@ -157,7 +200,7 @@ public class Server implements Runnable{
             }
         }
         String message="";
-        if(status){
+        if(isExitClean){
             message="User : "+tempClient.getName()+" ( "+tempClient.getID()+" ) @ " + tempClient.address.toString() + " : " + tempClient.port + " has disconnected.";
         }else{
             message="User "+ tempClient.getName() +" id:: "+ tempClient.getID() + " Timed out";
@@ -172,24 +215,23 @@ public class Server implements Runnable{
             public void run(){
                 while(running){
                     sendToAll("/i/Ping");
-                    // System.out.println(clients.size());
+
                     try {
                         Thread.sleep(2000);
                     } catch (Exception e) {
                         e.printStackTrace(); 
                     }
-                    for(int i=0;i<clients.size();i++)
-                    {
+                    for(int i=0;i<clients.size();i++){
+
                         UserClient uc = clients.get(i);
-                        if(responseList.contains(clients.get(i).getID())){
-                            if(uc.attempt>=MAX_ATTEMPTS) disconnect(uc.getID(), false);
+                        if(!responseList.contains(clients.get(i).getID())){
+                            if(uc.attempt>MAX_ATTEMPTS) disconnect(uc.getID(), false);
                             else ++uc.attempt;
                         }
                         else{
-                            int a=new Integer(uc.getID());
-                            responseList.remove(new Integer(uc.getID()));
+                            responseList.remove(Integer.valueOf(uc.getID()));
                             uc.attempt=0;
-                            System.out.println(a+"OK");
+                            
                         }
                     }
                 }
@@ -198,3 +240,4 @@ public class Server implements Runnable{
         manage.start();
     }
 }
+

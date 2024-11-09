@@ -29,7 +29,7 @@ public class ServerRunner {
         }
         port = Integer.parseInt(args[0]);
         new ServerRunner(port);
-        System.out.println("your port is "+ port);
+        System.out.println("***************************\nSERVER STARTED SUCCESSFULLY");
     }
 
 }

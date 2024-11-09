@@ -122,13 +122,18 @@ public class CLientGui extends JFrame implements Runnable{
         }catch(Exception e){
             e.printStackTrace();
         }
+
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1024,920);
         setMinimumSize(new Dimension(1024, 920));
         setLocationRelativeTo(null);
         contentPane=new JPanel();
+        
+        
         //* experimental
         // contentPane.setBackground(new Color(31,31,31));
+        
         contentPane.setBorder(new EmptyBorder(5,5,5,5));
         contentPane.setLayout(new BorderLayout(0,0));
         setContentPane(contentPane);
@@ -155,16 +160,16 @@ public class CLientGui extends JFrame implements Runnable{
         GridBagConstraints gdc_chat=new GridBagConstraints();
         gdc_chat.insets=new Insets(0,20,0,5);
         gdc_chat.fill=GridBagConstraints.BOTH;
-        
-        // !! will come back to it. I wanna add friend panel too
-        // gdc_chat.gridx=1; //* column index
-        // gdc_chat.gridy=1; //* row index
-        // gdc_chat.gridwidth=2;
         gdc_chat.gridx=0;
         gdc_chat.gridy=0;
         gdc_chat.gridwidth=3;
         gdc_chat.gridheight=2;
         contentPane.add(Chat,gdc_chat);
+        // !! will come back to it. I wanna add a friend panel too
+        // gdc_chat.gridx=1; //* column index
+        // gdc_chat.gridy=1; //* row index
+        // gdc_chat.gridwidth=2;
+        
 
         //* Message area
         txtMsg=new JTextField();
