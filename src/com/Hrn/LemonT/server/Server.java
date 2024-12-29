@@ -29,7 +29,7 @@ public class Server implements Runnable{
     private Thread run,manage,send,recieve;
     
     ////Commands///////////////////////////////////////////////////////////////////////
-    private final String COMMAND_ARGS   =   "sudo";
+    private final String COMMAND_ARGS   =   "sudo"; 
     private final String ARGS_FETCHER   =   "get";
     private final String PUSH           =   "push";
     private final String HELP           =   "help";
@@ -38,7 +38,7 @@ public class Server implements Runnable{
     private final String REMOVE         =   "rm";
     
     /////Flags//////////////////////////////////////////////////////////////////////// 
-    private final String fUSER           =   "-usr";
+    private final String fCLIENTS           =   "-usr";
 
     // private String 
 
@@ -86,7 +86,7 @@ public class Server implements Runnable{
             catch(ArrayIndexOutOfBoundsException e)
             {
                 Command="";
-                System.out.println("[Warn:#1] Incomplete command !!");
+                WARN("---> missing");
             }
         }
         // else if(Command.startsWith(REMOVE+fUSER))
@@ -123,11 +123,13 @@ public class Server implements Runnable{
         else if(Command.equals(RAW_DATA)){
             raw=!raw;
         }
-        else if(Command.startsWith(REMOVE+fUSER))
+        /////////////////////////////////////////////
+        //// TEST for removing user///
+        else if(Command.startsWith(REMOVE+fCLIENTS))
         {
             boolean removed=false;
             try{
-                int id=Integer.parseInt(Command.split(REMOVE+fUSER)[1]);
+                int id=Integer.parseInt(Command.split(REMOVE+fCLIENTS)[1]);
                 System.out.println(id);
                 removed=disconnect(id, true);
             }catch(NumberFormatException e){
@@ -135,13 +137,15 @@ public class Server implements Runnable{
                 return;
             }
             catch(ArrayIndexOutOfBoundsException e){
-                System.out.println("Missing Id");
+                WARN("----->Missing ID");
             }
+
             if(removed==false)
             {
-                System.out.println("Not correct ID");
+                System.out.println("ID DOES NOT EXISTS");
             }
         }
+        //////////////////////////
         else{
             System.out.println(Command+"<-[Err:#1] Invalid Command");
         }
@@ -314,6 +318,11 @@ public class Server implements Runnable{
             }
         };
         manage.start();
+    }
+
+    private void WARN(String optMessage)
+    {
+        System.out.println("[Warn:#1] Incomplete command "+optMessage);
     }
 }
 
