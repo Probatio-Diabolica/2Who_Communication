@@ -160,7 +160,6 @@ public class Server implements Runnable{
         Scanner scanner = new Scanner(System.in);
         while(running){
             String command= scanner.nextLine() ;
-            if(command.equals("STOP")) running=false;
             command = commandParser(command);
             Actions(command);
         }
