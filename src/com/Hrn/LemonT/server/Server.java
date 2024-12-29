@@ -110,7 +110,7 @@ public class Server implements Runnable{
         {
             if(clients.size()==0) System.out.println("No active users");
             else{
-                for(int i=0;i<clients.size();i++) System.out.println("Client ID : "+clients.get(i).getID() + "Client name : "+clients.get(i).getName());
+                for(int i=0;i<clients.size();i++) System.out.println("Client ID : "+clients.get(i).getID() + " :: Client name : "+clients.get(i).getName());
             }
 
         }else if(Command.equals(HELP)) {
@@ -277,7 +277,7 @@ public class Server implements Runnable{
                 tempClient=clients.get(i);
                 clients.remove(i);
                 if(isExitClean){
-                    message="User : "+tempClient.getName()+" ( "+tempClient.getID()+" ) @ " + tempClient.address.toString() + " : " + tempClient.port + " has disconnected.";
+                    message="User : "+tempClient.getName()+" ( "+tempClient.getID()+" ) @ " + tempClient.address.toString() + " : port => " + tempClient.port + " has disconnected.";
                 }else{
                     message="User "+ tempClient.getName() +" id:: "+ tempClient.getID() + " Timed out";
                 }
