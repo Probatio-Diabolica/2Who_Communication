@@ -1,2 +1,2 @@
 # Todo
->* Add a firned panel
+>* Add a friend panel

@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +12,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,7 +38,7 @@ public class CLientGui extends JFrame implements Runnable{
     private boolean running = false;
 
     public CLientGui(String name, String address, int port){
-        setTitle("LemonT Chat for " + name);
+        setTitle("2hu" + name);
         ImageIcon icon = new ImageIcon("Assets/icon.png");
         setIconImage(icon.getImage());
         client=new Client(name,address,port);
@@ -61,7 +56,7 @@ public class CLientGui extends JFrame implements Runnable{
         }else{
             console("Cannot make a connection");
         }
-        String Connection = "/c/"+name ; 
+        String Connection = "/c/"+name+"/e/" ; 
         client.send(Connection.getBytes());
         this.running=true;
         run = new Thread(this,"m__Running"); 
@@ -111,9 +106,9 @@ public class CLientGui extends JFrame implements Runnable{
         if(toClient) {
             Message = "[ "+client.getName()+" ]"+" :: "+Message ;
             Message="/m/"+Message+"/e/";
-        }client.send(Message.getBytes());
-        txtMsg.setText("");
-        
+            txtMsg.setText("");
+        }
+        client.send(Message.getBytes());
     }
     private void setUpClient()
     {
@@ -208,8 +203,8 @@ public class CLientGui extends JFrame implements Runnable{
                 String disconnect="/d/"+client.getID()+"/e/";
                 System.out.println(disconnect);
                 send(disconnect,false);
-                running=false;
                 client.close();
+                running=false;
             }
         });
 

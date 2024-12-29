@@ -1,6 +1,7 @@
 package com.Hrn.LemonT;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,20 +59,21 @@ public class Login extends JFrame{
         File path = new File("Assets/icon.png");
         BufferedImage icon = ImageIO.read(path);
         setIconImage(icon);
+        // setUndecorated(true);
         
         // ImageIcon icon = new ImageIcon("Assets/icon");
         // setIconImage(icon.getImage());
 
 
         setResizable(false);
-        setTitle("Welcome to Lemon T");
+        setTitle("2hu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400,400);
         setLocationRelativeTo(null);
 
         //$ panel/window
         contentPane= new JPanel();
-        // contentPane.setBackground(new Color(31,31,31));
+        // contentPane.setBackground(new Color(0,0,0));
         contentPane.setBorder(new EmptyBorder(5,5,5,5));
         contentPane.setLayout(new BorderLayout(0,0));
         setContentPane(contentPane);

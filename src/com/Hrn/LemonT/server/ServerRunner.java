@@ -7,7 +7,7 @@ package com.Hrn.LemonT.server;
 
 
 //note: I have the plans of accessing multiple server using this way, because Our server class is responsible for the instantation of the "Server".
-////hence I can connoct to multi servers essentially more people.
+////hence I can connect to multi servers essentially more people.
 //!! Here I made an entry point because I want or server to be a complete different entity  
 
 
@@ -24,11 +24,15 @@ public class ServerRunner {
         int port;
         if(args.length != 1)
         {
-            System.out.println("You are missing a port number");
-            return ;
+            System.out.println("You are missing a port number. Hence, default port 2005 picked");
+            port=2005;
+            new ServerRunner(port);
         }
-        port = Integer.parseInt(args[0]);
-        new ServerRunner(port);
+        else{
+            port = Integer.parseInt(args[0]);
+            new ServerRunner(port);
+        }
+
         System.out.println("***************************\nSERVER STARTED SUCCESSFULLY");
     }
 

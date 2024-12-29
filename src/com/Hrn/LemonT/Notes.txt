@@ -1,0 +1,37 @@
+I think I may have answered this in another one of your comments but too much info is rarely a bad thing. I've added some info on AST at the end of the comment.
+
+Any code compiler generally has 6 stages. Lexical Analysis, Syntax Analysis, Semantic Analysis, Intermediate Code Generation, Code Optimisation, and Output Code Generation.
+
+Lexical Analysis (which is probably what OOP has implemented in the lexer file) essentially takes the input program and splits it into "tokens". A token is the smallest unit of meaningful data in the program. In c, "int" (as well as any other keyword) is a token, and so is "123", ""hello world"". These are the "molecules" of the program.
+
+Syntax and Semantic Analysis is generally done by a Parser. A parser reads a stream of tokens sent by the lexical analyser/lexer, and tries matching them with constructs you have defined in your language's grammar.
+
+For example, if the lexer sends the parser IF, followed by an expression like a<b followed by a statement, then the parser should identify that it just received an if-statement. Once it's identified this, it can do a variety of things, like build a parse tree, and generate intermediate code (which is a kind of pseudo assembly that is easy to convert to actual assembly)
+
+The optimiser, well, optimises the intermediate code (removes unreachable code etc).
+
+Finally, the output code generator takes the optimised code and generates assembly (or even machine code).
+
+All of these steps have multiple levels of complexity, but this is a very high level overview of the process.
+
+An abstract syntax tree or AST, is a very effective way of representing an input program for compilation. Let's take an example statement, like a = b+c.
+
+Let us presume our language supports assignment statements and expressions.
+
+Now we can say that the entire string "a=b+c" is an assignment statement. As such "assignment statement" will be the root of our tree.
+
+What can an assignment statement consist of? Well, it consists of an identifier, followed by an equals sign, followed by an expression, right?
+
+These (identifier, equals sign, expression) are the children of the root node.
+
+You keep doing this for all nonterminals (a non terminal is a grammar construction that can be broken down into more tokens, e.g an expression)
+
+The expression here consists of an expression plus another expression.
+
+Thus, the children of the expression node (the child of the root node) in the AST is an expression, a plus sign, and another expression.
+
+Further, the expressions to the right and left of the plus sign in the tree are identifiers (b and c are identifiers, remember?)
+
+Now our tree is complete!
+
+One cool thing about an abstract syntax tree is that if you perform a DFS (depth first search) on it, you can get back the original source code (or an abstract representation of it, anyway). 
