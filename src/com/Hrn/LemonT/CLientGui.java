@@ -38,7 +38,7 @@ public class CLientGui extends JFrame implements Runnable{
     private boolean running = false;
 
     public CLientGui(String name, String address, int port){
-        setTitle("2hu" + name);
+        setTitle("2who_" + name);
         ImageIcon icon = new ImageIcon("Assets/icon.png");
         setIconImage(icon.getImage());
         client=new Client(name,address,port);
