@@ -1,2 +1,6 @@
+#editor and dir
 .vscode/
 bin/
+
+#java
+*.class
